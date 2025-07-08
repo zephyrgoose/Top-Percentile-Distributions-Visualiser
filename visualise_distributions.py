@@ -5,6 +5,23 @@ from scipy.stats import norm
 import matplotlib.pyplot as plt
 
 def visualise_distributions(percentage_difference, percentage_cutoff, label_A="Group 1", label_B="Group 2"):
+    """Plot and return statistics comparing two normally distributed groups.
+
+    Parameters
+    ----------
+    percentage_difference : float
+        Difference between the group means expressed as a percentage.
+    percentage_cutoff : float
+        Percentile cutoff used to compute the ratio of top performers.
+    label_A, label_B : str
+        Optional labels for the two groups.
+
+    Returns
+    -------
+    dict
+        Dictionary containing the computed means, cut-off and proportions.
+    """
+
     # Calculate the means for the two groups
     mean_A = 50 + (percentage_difference / 2)
     mean_B = 50 - (percentage_difference / 2)
@@ -66,17 +83,27 @@ def visualise_distributions(percentage_difference, percentage_cutoff, label_A="G
     plt.savefig('output.png')
     plt.show()
 
-# Prompt the user for inputs
-percentage_difference = float(input("Enter the percentage difference between the means: "))
-percentage_cutoff = float(input("Enter the percentage cutoff: "))
-label_A = input("Enter a label for the first group (press enter to use 'Group 1'): ")
-label_B = input("Enter a label for the second group (press enter to use 'Group 2'): ")
+    return {
+        "mean_A": mean_A,
+        "mean_B": mean_B,
+        "cutoff": cutoff,
+        "proportion_A": proportion_A_above_cutoff,
+        "proportion_B": proportion_B_above_cutoff,
+        "ratio": ratio,
+    }
 
-# Use default labels if none were provided
-if label_A == "":
-    label_A = "Group 1"
-if label_B == "":
-    label_B = "Group 2"
+if __name__ == "__main__":
+    # Prompt the user for inputs
+    percentage_difference = float(input("Enter the percentage difference between the means: "))
+    percentage_cutoff = float(input("Enter the percentage cutoff: "))
+    label_A = input("Enter a label for the first group (press enter to use 'Group 1'): ")
+    label_B = input("Enter a label for the second group (press enter to use 'Group 2'): ")
 
-# Call the function with the user's inputs
-visualise_distributions(percentage_difference, percentage_cutoff, label_A, label_B)
+    # Use default labels if none were provided
+    if label_A == "":
+        label_A = "Group 1"
+    if label_B == "":
+        label_B = "Group 2"
+
+    # Call the function with the user's inputs
+    visualise_distributions(percentage_difference, percentage_cutoff, label_A, label_B)
